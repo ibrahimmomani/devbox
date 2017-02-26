@@ -1,0 +1,52 @@
+alias ..="cd .."
+alias ...="cd ../.."
+
+alias h='cd ~'
+alias c='clear'
+alias art=artisan
+
+alias phpspec='vendor/bin/phpspec'
+alias phpunit='vendor/bin/phpunit'
+alias serve=serve-laravel
+
+alias xoff='sudo phpdismod -s cli xdebug'
+alias xon='sudo phpenmod -s cli xdebug'
+
+function artisan() {
+    php artisan "$@"
+}
+
+function serve-laravel() {
+    if [[ "$1" && "$2" ]]
+    then
+        sudo dos2unix /vagrant/tools/nginx/serve-laravel.sh
+        sudo bash /vagrant/tools/nginx/serve-laravel.sh "$1" "$2" 80
+    else
+        echo "Error: missing required parameters."
+        echo "Usage: "
+        echo "  serve domain path"
+    fi
+}
+
+function serve-proxy() {
+    if [[ "$1" && "$2" ]]
+    then
+        sudo dos2unix /vagrant/tools/nginx/serve-proxy.sh
+        sudo bash /vagrant/tools/nginx/serve-proxy.sh "$1" "$2" 80
+    else
+        echo "Error: missing required parameters."
+        echo "Usage: "
+        echo "  serve-proxy domain port"
+    fi
+}
+
+function share() {
+    if [[ "$1" ]]
+    then
+        ngrok http -host-header="$1" 80
+    else
+        echo "Error: missing required parameters."
+        echo "Usage: "
+        echo "  share domain"
+    fi
+}
